@@ -55,7 +55,7 @@ To run Sum Metric Service, ensure to have the following:
    3) Posted data will show up as empty in the body
    4) Command line will show: "POST /metric/{key} { "value" = {value} }
    
-5) Users may submit as many HTTP POST requests with variance "value".
+5) Users may submit as many HTTP POST requests with variance {key} and {value}.
 6) Set your HTTP request to GET
 7) Input this link: 
    ```sh
