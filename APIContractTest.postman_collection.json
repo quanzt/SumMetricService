@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "5c7e4b4a-f9fc-4ca7-9e56-d53979ff9ecc",
+		"name": "APIContractTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8888/metric/active_visitors",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b121b4ec-fff7-446e-a1ac-18acbe3486cc",
+						"exec": [
+							"var values = pm.environment.get(\"values\");\r",
+							"\r",
+							"if (!values) {\r",
+							"    values = [2, 3, 5, 7, 11, 13, 17, 19];\r",
+							"}\r",
+							"\r",
+							"var currentValues = values.shift();\r",
+							"pm.environment.set(\"value\", currentValues);\r",
+							"pm.environment.set(\"values\", values)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "578aad04-62d5-4e16-8307-ffb5b248f00c",
+						"exec": [
+							"var values = pm.environment.get(\"values\");\r",
+							"\r",
+							"if (values && values.length > 0) {\r",
+							"    postman.setNextRequest('http://localhost:8888/metric/active_visitors');\r",
+							"    setTimeout(function(){}, 1000);\r",
+							"} else {\r",
+							"    postman.setNextRequest('http://localhost:8888/metric/active_visitors/sum');\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"value\": {{value}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/metric/active_visitors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"metric",
+						"active_visitors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/metric/active_visitors/sum",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c5fda514-17f7-45be-b665-9c4c283d47b9",
+						"exec": [
+							"pm.sendRequest('http://localhost:8888/metric/active_visitors/sum', function (err, response) {\r",
+							"    console.log(response.json());\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/metric/active_visitors/sum",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"metric",
+						"active_visitors",
+						"sum"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
